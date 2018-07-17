@@ -1,0 +1,44 @@
+javascript:
+function compareToTime(objA, objB){
+  return objA.date - objB.date;
+}
+function getUrlMap(array){
+
+	var result = "http://bing.com/maps/default.aspx?rtp=";
+	for(var i = 0; i < array.length; i++){
+		result +="adr." + array[i].address + " " 
+						+ array[i].state + "~";
+	}
+
+	return result;
+}
+function getMyData(){
+
+	var data = [];
+	var address = document.querySelectorAll('div.field.field-name-field-work-order-address.field-type-text.field-label-above > div > div');
+	var state = document.querySelectorAll('div.field.field-name-field-work-order-state.field-type-text.field-label-hidden > div > div');
+	var tempDate = document.querySelectorAll('ul > li > article > div > div > div > div > span > div > span');
+	var allDate = [];
+	for(var i = 0; i < tempDate.length;i++){
+		if(i % 2 == 0){
+			allDate.push(tempDate[i].innerHTML);
+		}
+	}
+	for(var i = 0; i < address.length; i++){
+		var temp = { 
+			address: address[i].innerHTML,
+			state: state[i].innerHTML,
+			date: allDate[i]
+		};
+		data.push(temp);
+	}
+
+	data.sort(compareToTime);
+	return data;
+}
+function openURl(){
+
+	var data = getMyData();
+	window.open(getUrlMap(data));
+}
+openURl();
